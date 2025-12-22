@@ -1,0 +1,22 @@
+{
+  "name": "local",
+  "owner": {
+    "name": "victorlau1"
+  },
+  "metadata": {
+    "description": "Local development plugins"
+  },
+  "plugins": [
+    {
+      "name": "claude-victor",
+      "source": ".",
+      "description": "Enforced planning workflow with memory-keeper storage",
+      "version": "1.0.0",
+      "author": {
+        "name": "victorlau1"
+      },
+      "commands": ["commands/plan-victor.md"],
+      "hooks": ["hooks/hooks.json"]
+    }
+  ]
+}
