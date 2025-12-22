@@ -1,0 +1,21 @@
+# Windows-specific Makefile overrides
+# Included by main Makefile when OS=Windows_NT
+
+INSTALL_GH = winget install --id GitHub.cli
+PYTHON = python
+PIP = pip
+RM = rmdir /s /q
+MKDIR = mkdir
+SEP = \\
+
+# Windows-specific clean command
+clean:
+	@echo Cleaning build artifacts...
+	-$(RM) build 2>nul
+	-$(RM) dist 2>nul
+	-$(RM) .pytest_cache 2>nul
+	-$(RM) htmlcov 2>nul
+	-$(RM) reports 2>nul
+	-del /s /q *.egg-info 2>nul
+	-del /s /q .coverage 2>nul
+	@echo Clean complete

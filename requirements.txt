@@ -1,0 +1,2 @@
+# Runtime dependencies for claude-victor
+pyyaml>=6.0
