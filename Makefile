@@ -1,7 +1,7 @@
 # Claude-Victor Makefile
 # Cross-platform automation for installation, testing, and verification
 
-.PHONY: all install setup-python setup-dev configure-gh configure-mcp \
+.PHONY: all install setup-python setup-dev configure-gh configure-mcp configure-plugin \
         test-unit test-integration test-bdd test-all verify clean help
 
 # Detect OS and set commands accordingly
@@ -55,7 +55,11 @@ configure-gh:
 configure-mcp:
 	@echo "Memory-keeper MCP configuration..."
 	@echo "Note: memory-keeper MCP should be configured in Claude Code settings"
-	@echo "See .claude-plugin/mcp/memory-keeper.json for reference"
+	@echo "See mcp/memory-keeper.json for reference"
+
+# Configure Claude Code plugin (adds local marketplace to settings)
+configure-plugin:
+	@$(PYTHON) scripts/configure_plugin.py
 
 # Run unit tests
 test-unit:
@@ -129,6 +133,7 @@ help:
 	@echo "  setup-dev       Install development dependencies"
 	@echo "  configure-gh    Configure GitHub CLI authentication"
 	@echo "  configure-mcp   Show memory-keeper MCP configuration info"
+	@echo "  configure-plugin Add local marketplace to Claude Code settings"
 	@echo "  test-unit       Run unit tests"
 	@echo "  test-integration Run integration tests"
 	@echo "  test-bdd        Run BDD tests"
