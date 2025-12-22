@@ -1,0 +1,9 @@
+{
+  "hooks": [
+    {
+      "event": "UserPromptSubmit",
+      "command": "./enforce-planning.sh",
+      "description": "Reminder to use planning mode for implementation tasks"
+    }
+  ]
+}

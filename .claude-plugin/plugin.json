@@ -2,17 +2,9 @@
   "name": "claude-victor",
   "version": "1.0.0",
   "description": "Enforced planning workflow with memory-keeper storage for Claude Code",
-  "author": "Claude Victor",
-  "license": "MIT",
-  "commands": [
-    "commands/plan-victor.md"
-  ],
-  "hooks": {
-    "UserPromptSubmit": "hooks/enforce-planning.sh"
+  "author": {
+    "name": "Claude Victor"
   },
-  "mcp": [
-    "mcp/memory-keeper.json"
-  ],
-  "readme": "README.md",
-  "homepage": "https://github.com/owner/claude-victor"
+  "license": "MIT",
+  "homepage": "https://github.com/victorlau1/claude-victor"
 }
