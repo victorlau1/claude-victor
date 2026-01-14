@@ -1,0 +1,67 @@
+{
+  "name": "memory-keeper",
+  "description": "MCP server configuration for memory-keeper integration",
+  "note": "This file documents the expected MCP configuration. The actual MCP server should be configured in Claude Code settings.",
+  "server": {
+    "command": "memory-keeper-mcp",
+    "args": [],
+    "env": {}
+  },
+  "tools": {
+    "context_save": {
+      "description": "Save context item to memory-keeper",
+      "usage": "context_save(key, value, category?, priority?)",
+      "example": {
+        "key": "plan:feature-auth",
+        "value": "# Authentication Plan\n\n## Steps\n1. Add login endpoint",
+        "category": "decision",
+        "priority": "high"
+      }
+    },
+    "context_get": {
+      "description": "Retrieve context from memory-keeper",
+      "usage": "context_get(key?, keyPattern?, category?)",
+      "example": {
+        "keyPattern": "plan:*"
+      }
+    },
+    "context_checkpoint": {
+      "description": "Create a checkpoint for restoration",
+      "usage": "context_checkpoint(name, description?)",
+      "example": {
+        "name": "before-refactor",
+        "description": "Checkpoint before major refactoring"
+      }
+    },
+    "context_session_start": {
+      "description": "Start a new context session",
+      "usage": "context_session_start(name?, projectDir?)",
+      "example": {
+        "name": "claude-victor-dev",
+        "projectDir": "/path/to/claude-victor"
+      }
+    },
+    "context_export": {
+      "description": "Export session for backup or sharing",
+      "usage": "context_export(format?)",
+      "example": {
+        "format": "json"
+      }
+    },
+    "context_import": {
+      "description": "Import session data",
+      "usage": "context_import(filePath, merge?)",
+      "example": {
+        "filePath": "./session-backup.json",
+        "merge": true
+      }
+    }
+  },
+  "integration": {
+    "claude-victor": {
+      "plan_key_prefix": "plan:",
+      "default_category": "decision",
+      "auto_checkpoint": true
+    }
+  }
+}

@@ -6,5 +6,19 @@
     "name": "Claude Victor"
   },
   "license": "MIT",
-  "homepage": "https://github.com/victorlau1/claude-victor"
+  "homepage": "https://github.com/victorlau1/claude-victor",
+  "commands": [
+    {
+      "name": "plan-victor",
+      "description": "Enter planning mode with memory-keeper persistence",
+      "file": "./commands/plan-victor.md"
+    }
+  ],
+  "hooks": [
+    {
+      "event": "UserPromptSubmit",
+      "command": "./hooks/enforce-planning.sh",
+      "description": "Reminder to use planning mode for implementation tasks"
+    }
+  ]
 }
