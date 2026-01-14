@@ -1,0 +1,62 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -r *)",
+      "Bash(sudo *)",
+      "Bash(sudo:*)",
+      "Bash(chmod 777 *)",
+      "Bash(chmod -R *)",
+      "Bash(chown -R *)",
+      "Bash(mkfs *)",
+      "Bash(dd if=*)",
+      "Bash(> /dev/*)",
+      "Bash(:(){ :|:& };:*)",
+      "Bash(wget * | sh*)",
+      "Bash(curl * | sh*)",
+      "Bash(curl * | bash*)",
+      "Bash(wget * | bash*)",
+      "Bash(mv /* *)",
+      "Bash(mv /usr *)",
+      "Bash(mv /bin *)",
+      "Bash(mv /etc *)",
+      "Bash(mv /var *)",
+      "Bash(mv /home *)",
+      "Bash(mv /System *)",
+      "Bash(mv /Library *)",
+      "Bash(rm /*)",
+      "Bash(rm /usr*)",
+      "Bash(rm /bin*)",
+      "Bash(rm /etc*)",
+      "Bash(rm /var*)",
+      "Bash(rm /System*)",
+      "Bash(rm /Library*)",
+      "Bash(rm /Applications*)",
+      "Bash(rm ~/Library*)",
+      "Bash(rm ~/.ssh*)",
+      "Bash(rm ~/.gnupg*)",
+      "Bash(rm ~/.config*)",
+      "Bash(killall *)",
+      "Bash(pkill -9 *)",
+      "Bash(shutdown *)",
+      "Bash(reboot *)",
+      "Bash(halt *)",
+      "Bash(init 0*)",
+      "Bash(init 6*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/safe-bash-validator.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
