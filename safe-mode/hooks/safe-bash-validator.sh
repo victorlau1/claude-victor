@@ -36,7 +36,6 @@ fi
 # DANGEROUS COMMAND PATTERNS
 # =============================================================================
 
-# Pattern categories with explanations
 declare -a DANGEROUS_PATTERNS=(
     # Recursive deletion
     'rm\s+(-[a-zA-Z]*r[a-zA-Z]*\s+|--recursive)'
@@ -44,7 +43,7 @@ declare -a DANGEROUS_PATTERNS=(
     'rm\s+-rf'
     'rm\s+-fr'
 
-    # Root/system directory operations
+    # Root/system directory operations (rm)
     'rm\s+/($|\s)'
     'rm\s+/usr'
     'rm\s+/bin'
@@ -57,10 +56,15 @@ declare -a DANGEROUS_PATTERNS=(
     'rm\s+~/.ssh'
     'rm\s+~/.gnupg'
 
-    # Privilege escalation
-    'sudo\s+'
-    'su\s+-'
-    'doas\s+'
+    # Root/system directory operations (mv)
+    'mv\s+/\s'
+    'mv\s+/usr'
+    'mv\s+/bin'
+    'mv\s+/etc'
+    'mv\s+/var'
+    'mv\s+/home'
+    'mv\s+/System'
+    'mv\s+/Library'
 
     # Destructive disk operations
     'mkfs'
@@ -88,15 +92,14 @@ declare -a DANGEROUS_PATTERNS=(
     'systemctl\s+(poweroff|reboot|halt)'
 
     # Mass process killing
-    'killall\s+-9'
+    'killall'
     'pkill\s+-9'
     'kill\s+-9\s+-1'
 
     # Dangerous permission changes
     'chmod\s+777'
-    'chmod\s+-R\s+777'
-    'chmod\s+666\s+/'
-    'chown\s+-R.*:.*\s+/'
+    'chmod\s+-R'
+    'chown\s+-R'
 
     # Dangerous redirects
     '>\s*/dev/(sda|hd|nvme)'
@@ -110,7 +113,7 @@ declare -a DANGEROUS_PATTERNS=(
     'rm\s+.*\.npmrc'
     'rm\s+.*\.pypirc'
 
-    # Network attacks (if somehow attempted)
+    # Network attacks
     'iptables\s+-F'
     'iptables\s+--flush'
 )
@@ -136,7 +139,6 @@ done
 # PATH SAFETY CHECK
 # =============================================================================
 
-# Block operations on critical paths even with complex commands
 CRITICAL_PATHS=(
     "^/"
     "/usr"

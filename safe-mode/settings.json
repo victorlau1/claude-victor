@@ -4,8 +4,6 @@
       "Bash(rm -rf *)",
       "Bash(rm -fr *)",
       "Bash(rm -r *)",
-      "Bash(sudo *)",
-      "Bash(sudo:*)",
       "Bash(chmod 777 *)",
       "Bash(chmod -R *)",
       "Bash(chown -R *)",
@@ -53,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./hooks/safe-bash-validator.sh"
+            "command": ".claude/hooks/safe-bash-validator.sh"
           }
         ]
       }

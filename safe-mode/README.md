@@ -1,92 +1,104 @@
 # Claude Code Safe Mode
 
-Safety settings to prevent dangerous bash commands from executing without explicit permission.
+Directory-specific safety settings that block dangerous bash commands.
+
+## Quick Install
+
+```bash
+# Install to a specific directory
+./install.sh /path/to/your/project
+
+# Or install to current directory
+./install.sh .
+```
+
+This creates `.claude/settings.json` and `.claude/hooks/` in the target directory. The safety rules only apply when running `claude` from that directory.
 
 ## What Gets Blocked
 
-- `rm -rf` and recursive deletions
-- `sudo` and privilege escalation
-- Disk operations (`dd`, `mkfs`, `fdisk`)
-- Fork bombs and resource exhaustion
-- Remote code execution (`curl | sh`, `wget | bash`)
-- System shutdown/reboot commands
-- Mass process killing (`killall -9`, `pkill -9`)
-- Dangerous permission changes (`chmod 777`, `chmod -R`)
-- Operations on critical paths (`/`, `/usr`, `/etc`, `~/.ssh`, etc.)
+| Command | Reason |
+|---------|--------|
+| `rm -rf`, `rm -r` | Recursive deletion |
+| `chmod 777`, `chmod -R` | Dangerous permission changes |
+| `chown -R` | Recursive ownership changes |
+| `killall`, `pkill -9` | Mass process killing |
+| `mv /usr`, `rm /etc`, etc. | System directory operations |
+| `curl \| bash`, `wget \| sh` | Remote code execution |
+| `shutdown`, `reboot`, `halt` | System power commands |
+| `dd`, `mkfs`, `fdisk` | Disk operations |
 
-## Installation
+## What's Allowed
 
-### Option 1: Copy to Project
+| Command | Notes |
+|---------|-------|
+| `sudo` | Allowed (Claude will still prompt for permission) |
+| `rm file.txt` | Regular file deletion (non-recursive) |
+| `chmod 644` | Normal permission changes |
+| All other commands | Normal operation |
 
-Copy `settings.json` to your project's `.claude/settings.json`:
+## How It Works
 
-```bash
-cp safe-mode/settings.json /path/to/project/.claude/settings.json
+1. **Permission Deny Rules** (`settings.json`): Pattern-based blocking at the Claude permission layer
+2. **PreToolUse Hook** (`safe-bash-validator.sh`): Regex-based validation before any Bash command executes
+
+Both layers must pass for a command to run.
+
+## Directory-Specific
+
+These settings only apply to the directory where they're installed. Other directories are unaffected.
+
+```
+/my-project/           ← Safe mode active here
+  .claude/
+    settings.json
+    hooks/
+      safe-bash-validator.sh
+
+/other-project/        ← Normal Claude behavior
 ```
 
-Make sure to also copy the hooks:
+## Manual Installation
+
+If you prefer not to use the install script:
 
 ```bash
-mkdir -p /path/to/project/.claude/hooks
-cp safe-mode/hooks/safe-bash-validator.sh /path/to/project/.claude/hooks/
-```
-
-### Option 2: Use as User Settings
-
-Copy to your global Claude settings:
-
-```bash
-# Backup existing settings first
-cp ~/.claude/settings.json ~/.claude/settings.json.backup
-
-# Merge or replace with safe mode settings
-cp safe-mode/settings.json ~/.claude/settings.json
+mkdir -p /your/project/.claude/hooks
+cp settings.json /your/project/.claude/
+cp hooks/safe-bash-validator.sh /your/project/.claude/hooks/
+chmod +x /your/project/.claude/hooks/safe-bash-validator.sh
 ```
 
 ## Testing
 
-Run Claude in a test directory and try a dangerous command:
-
 ```bash
-cd /tmp/safe-mode-test
-mkdir -p .claude/hooks
-cp /path/to/claude-victor/safe-mode/settings.json .claude/
-cp /path/to/claude-victor/safe-mode/hooks/safe-bash-validator.sh .claude/hooks/
-chmod +x .claude/hooks/safe-bash-validator.sh
+# Install to test directory
+./install.sh /tmp/safe-test
 
-claude
+# Run Claude there
+cd /tmp/safe-test && claude
+
+# Ask Claude to run: rm -rf testfile.txt
+# It should be blocked
 ```
-
-Then ask Claude to run: `rm -rf /tmp/test`
-
-The command should be blocked with an error message.
-
-## How It Works
-
-1. **Permission Deny Rules**: The `settings.json` contains deny patterns that block common dangerous command forms
-2. **PreToolUse Hook**: The `safe-bash-validator.sh` script runs before every Bash command and uses regex matching to catch more sophisticated patterns
 
 ## Customization
 
-Edit `settings.json` to add/remove deny rules:
+Edit `settings.json` to modify deny rules:
 
 ```json
 {
   "permissions": {
     "deny": [
-      "Bash(your-pattern-here *)"
-    ],
-    "allow": [
-      "Bash(safe-command-here)"
+      "Bash(your-pattern *)"
     ]
   }
 }
 ```
 
-Edit `safe-bash-validator.sh` to add regex patterns:
+Edit `hooks/safe-bash-validator.sh` to add regex patterns:
 
 ```bash
 DANGEROUS_PATTERNS=(
-    'your-regex-pattern'
+    'your-regex-here'
 )
 ```
