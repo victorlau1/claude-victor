@@ -57,9 +57,13 @@ configure-mcp:
 	@echo "Note: memory-keeper MCP should be configured in Claude Code settings"
 	@echo "See mcp/memory-keeper.json for reference"
 
-# Configure Claude Code plugin (adds local marketplace to settings)
+# Configure Claude Code plugin (adds local marketplace to known_marketplaces.json)
 configure-plugin:
 	@$(PYTHON) scripts/configure_plugin.py
+	@echo ""
+	@echo "To complete installation:"
+	@echo "  1. Restart Claude Code"
+	@echo "  2. Run: /plugin install claude-victor@local"
 
 # Run unit tests
 test-unit:

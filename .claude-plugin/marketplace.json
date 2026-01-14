@@ -1,22 +1,20 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "local",
+  "description": "Local development plugins for Claude Code",
   "owner": {
     "name": "victorlau1"
-  },
-  "metadata": {
-    "description": "Local development plugins"
   },
   "plugins": [
     {
       "name": "claude-victor",
-      "source": ".",
+      "source": "./",
       "description": "Enforced planning workflow with memory-keeper storage",
       "version": "1.0.0",
+      "category": "productivity",
       "author": {
         "name": "victorlau1"
-      },
-      "commands": ["commands/plan-victor.md"],
-      "hooks": ["hooks/hooks.json"]
+      }
     }
   ]
 }
